@@ -20,8 +20,18 @@ class UserRegistrationForm(forms.ModelForm): #Biz hozir user moedli uchum forma 
     def clean_password2(self):
         cd = self.cleaned_data
         if cd['password'] != cd['password2']:
-            raise forms.ValidationError('Passwords don\'t match.')
+            raise forms.ValidationError('Passwords don\'t match.')  #Bu parollarni tekshiradi va tozalaydi
         return cd['password2']
+
+    def clean_email(self):
+        data = self.cleaned_data['email']
+        if User.objects.filter(email=data).exists():           #bu esa email tekshirai
+            raise forms.ValidationError('Email already in use')
+        return data
+
+
+
+
 
 
 
@@ -34,5 +44,8 @@ class ProfileEditForm(forms.ModelForm): #Bu bizning profile malumotlarimza Profi
     class Meta:
         model = Profile
         fields = ['date_of_birth','photo']
+
+
+
 
 
