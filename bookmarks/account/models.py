@@ -7,6 +7,7 @@ class Profile(models.Model):
     date_of_birth = models.DateTimeField(blank=True,null=True)
     photo = models.ImageField(upload_to='user/%Y/%m%d/',
                               blank=True)
+    phone_number = models.IntegerField(blank=True,null=True)
 
     def __str__(self):
         return f'Profile of {self.user.username}'

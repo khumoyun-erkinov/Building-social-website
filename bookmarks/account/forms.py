@@ -7,8 +7,8 @@ class LoginForm(forms.Form):
     password = forms.CharField(widget=forms.PasswordInput)
 
 class UserRegistrationForm(forms.ModelForm): #Biz hozir user moedli uchum forma yaratdik
-    password = forms.CharField(label='Password',
-                               widget=forms.PasswordInput)
+    password = forms.CharField(label='Password',  #Password dib yoziladi
+                               widget=forms.PasswordInput) #Passwoord Input ishlidi
     password2 = forms.CharField(label='Repeat password',
                                 widget=forms.PasswordInput)
 
@@ -43,7 +43,7 @@ class UserEditForm(forms.ModelForm):
 class ProfileEditForm(forms.ModelForm): #Bu bizning profile malumotlarimza Profile modelga saqlaydi,va USer tug`ilgan kunini yoza oldai va upload qila oldi rasmi
     class Meta:
         model = Profile
-        fields = ['date_of_birth','photo']
+        fields = ['date_of_birth','photo','phone_number']
 
 
 
