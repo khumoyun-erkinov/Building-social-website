@@ -1,4 +1,10 @@
 from django.contrib.auth.models import User
+from .models import Profile
+
+
+
+
+
 #The user credentials will be checked using ModelBackend,
 # and if no user is returned, the credentials
 #will be checked using EmailAuthBackend.
@@ -18,4 +24,9 @@ class EmailAuthBackend:
             return User.objects.get(pk=user_id)#user_id oladi
         except User.DoesNotExist: #xatolik qaytaradi
             return None #yoki hec nima qaytarmaydi
+
+
+def create_profile(backend,user,*args,**kwargs):
+    Profile.objects.get_or_create(user=user)
+
 

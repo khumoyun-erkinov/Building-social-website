@@ -25,8 +25,8 @@ SECRET_KEY = 'django-insecure-m1rt3r_m!=n(xz(wj+4dsr*5g)9e^+7y(-kkk6s(=ch6*+yt=l
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-# ALLOWED_HOSTS = ['mysite.com', 'localhost', '127.0.0.1']
-ALLOWED_HOSTS = ['mysite.com']
+ALLOWED_HOSTS = ['mysite.com', 'localhost', '127.0.0.1']
+
 
 
 # Application definition
@@ -41,6 +41,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'social_django',
     'django_extensions',
+    'images.apps.ImagesConfig',
+
+
+
+
 
 
 ]
@@ -82,7 +87,9 @@ WSGI_APPLICATION = 'bookmarks.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        # 'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': BASE_DIR / 'humoyun.db',
+
     }
 }
 
@@ -121,7 +128,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR,'static'),
 ]
@@ -150,9 +157,25 @@ MEDIA_ROOT = BASE_DIR / 'media'
 SOCIAL_AUTH_FACEBOOK_KEY = '555040879428262'
 SOCIAL_AUTH_FACEBOOK_SECRET = 'cf0fbedd641c53d1438b37c6b76866a5'
 SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '110323043562-oacdephutbrl8vs0f2ksoaji4lkne5il.apps.googleusercontent.com' # Google Client ID
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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' # Google Client Secret
 
 AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend',
                            'account.authentication.EmailAuthBackend',
                            'social_core.backends.facebook.FacebookOAuth2',
-                           'social_core.backends.twitter.TwitterOAuth',]
+                           'social_core.backends.twitter.TwitterOAuth',
+                           'social_core.backends.google.GoogleOAuth2',]
+
+SOCIAL_AUTH_PIPELINE = [
+    'social_core.pipeline.social_auth.social_details',
+    'social_core.pipeline.social_auth.social_uid',
+    'social_core.pipeline.social_auth.auth_allowed',
+    'social_core.pipeline.social_auth.social_user',
+    'social_core.pipeline.user.get_username',
+    'social_core.pipeline.user.create_user',
+    'account.authentication.create_profile',
+    'social_core.pipeline.social_auth.associate_user',
+    'social_core.pipeline.social_auth.load_extra_data',
+    'social_core.pipeline.user.user_details',
+]
 

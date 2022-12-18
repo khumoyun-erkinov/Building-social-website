@@ -44,7 +44,7 @@ def regester(request):
             Profile.objects.create(user=new_user)
             return render(request,
                           'account/register_done.html',
-                          {'new_user':new_user})
+                          {'new_user': new_user})
     else:
         user_form = UserRegistrationForm()
     return render(request,'account/register.html',
@@ -68,6 +68,7 @@ def edit(request):
     else:
         user_form = UserEditForm(instance=request.user)
         profile_form = ProfileEditForm(
+
             instance=request.user.profile
         )
     return render(request,
