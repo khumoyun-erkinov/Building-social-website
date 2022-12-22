@@ -10,8 +10,9 @@ class ImageCreateForm(forms.ModelForm):
         model = Image
         fields = ['title', 'url', 'description']
         widgets = {
-            'url': forms.HiddenInput,
+            'url': forms.HiddenInput
         }
+
 
     def clean_url(self):
         url = self.cleaned_data['url']
@@ -38,3 +39,5 @@ class ImageCreateForm(forms.ModelForm):
         if commit:
             image.save()
         return image
+
+

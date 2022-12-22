@@ -1,7 +1,8 @@
-from django.urls import path,include
+from django.urls import path, include
 from . import views
 from django.contrib.auth import views as auth_views
 from . import views
+
 urlpatterns = [
     ## dastabki Login url
     # path('login/', views.user_login, name='login'),
@@ -35,13 +36,7 @@ urlpatterns = [
     # path('',views.dashboard,name='dashboard'),
     path('', include('django.contrib.auth.urls')),
     path('', views.dashboard, name='dashboard'),
-    path('register/',views.regester, name='register'),
-    path('edit/',views.edit,name='edit'),
-
-
-
-
-
-
+    path('register/', views.register, name='register'),
+    path('edit/', views.edit, name='edit'),
 
 ]

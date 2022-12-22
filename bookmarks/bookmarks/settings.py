@@ -15,7 +15,6 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
@@ -26,8 +25,6 @@ SECRET_KEY = 'django-insecure-m1rt3r_m!=n(xz(wj+4dsr*5g)9e^+7y(-kkk6s(=ch6*+yt=l
 DEBUG = True
 
 ALLOWED_HOSTS = ['mysite.com', 'localhost', '127.0.0.1']
-
-
 
 # Application definition
 
@@ -42,8 +39,7 @@ INSTALLED_APPS = [
     'social_django',
     'django_extensions',
     'images.apps.ImagesConfig',
-
-
+    'easy_thumbnails',
 
 
 
@@ -58,6 +54,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
 ]
 
 ROOT_URLCONF = 'bookmarks.urls'
@@ -65,7 +62,7 @@ ROOT_URLCONF = 'bookmarks.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS':  [BASE_DIR.joinpath('templates')],
+        'DIRS': [BASE_DIR.joinpath('templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -80,19 +77,30 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'bookmarks.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
+#
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        # 'NAME': BASE_DIR / 'db.sqlite3',
-        'NAME': BASE_DIR / 'humoyun.db',
-
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': "one_db",
+        'USER': "davron",
+        'PASSWORD': 'root',
+        'HOST': '127.0.0.1',
+        'PORT': '5432'
     }
 }
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         # 'NAME': BASE_DIR / 'db.sqlite3',
+#         'NAME': BASE_DIR / 'yyyy.db',
+#         # 'NAME': BASE_DIR / 'identifier.sqlite',
+#
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -112,59 +120,54 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR,'static'),
+    os.path.join(BASE_DIR, 'static'),
 ]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' #DJango email tanmirlab beradi
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # DJango email tanmirlab beradi
 
-
-LOGIN_REDIRECT_URL = 'dashboard'#Agar so`rovdan keyin parametr bo`msaa,
-LOGIN_URL = 'login' #Loginnga userni url yo`nltrdi (login_requied)
-LOGOUT_URL = 'logout' # Bu userni Urlni log out yo`naltradi
+LOGIN_REDIRECT_URL = 'dashboard'  # Agar so`rovdan keyin parametr bo`msaa,
+LOGIN_URL = 'login'  # Loginnga userni url yo`nltrdi (login_requied)
+LOGOUT_URL = 'logout'  # Bu userni Urlni log out yo`naltradi
 
 PASSWORD_HASHERS = [
     'django.contrib.auth.hashers.PBKDF2PasswordHasher',
     'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
     'django.contrib.auth.hashers.Argon2PasswordHasher',
     'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
-    'django.contrib.auth.hashers.ScryptPasswordHasher',]
-
+    'django.contrib.auth.hashers.ScryptPasswordHasher', ]
 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 SOCIAL_AUTH_FACEBOOK_KEY = '555040879428262'
 SOCIAL_AUTH_FACEBOOK_SECRET = 'cf0fbedd641c53d1438b37c6b76866a5'
 SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '110323043562-oacdephutbrl8vs0f2ksoaji4lkne5il.apps.googleusercontent.com' # Google Client ID
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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' # Google Client Secret
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '110323043562-oacdephutbrl8vs0f2ksoaji4lkne5il.apps.googleusercontent.com'  # Google Client ID
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'  # Google Client Secret
 
 AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend',
                            'account.authentication.EmailAuthBackend',
                            'social_core.backends.facebook.FacebookOAuth2',
                            'social_core.backends.twitter.TwitterOAuth',
-                           'social_core.backends.google.GoogleOAuth2',]
+                           'social_core.backends.google.GoogleOAuth2', ]
 
 SOCIAL_AUTH_PIPELINE = [
     'social_core.pipeline.social_auth.social_details',
@@ -178,4 +181,7 @@ SOCIAL_AUTH_PIPELINE = [
     'social_core.pipeline.social_auth.load_extra_data',
     'social_core.pipeline.user.user_details',
 ]
-
+# if DEBUG:
+#     import mimetypes
+#     mimetypes.add_type('application/javascript', 'js', True)
+#     mimetypes.add_type('text/css', '.css', True)
