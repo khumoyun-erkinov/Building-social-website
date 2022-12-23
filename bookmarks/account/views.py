@@ -6,6 +6,8 @@ from django.contrib import messages
 from .forms import LoginForm, UserRegistrationForm, \
     UserEditForm, ProfileEditForm
 from .models import Profile
+from django.shortcuts import get_object_or_404
+from django.contrib.auth.models import User
 
 
 def user_login(request):
@@ -71,7 +73,7 @@ def edit(request):
         if user_form.is_valid() and profile_form.is_valid():
             user_form.save()
             profile_form.save()
-            messages.success(request, 'Profile updated ' \
+            messages.success(request, 'Profile updated '
                                       'successfully')
         else:
             messages.error(request, 'Error updating your profile')
@@ -83,6 +85,30 @@ def edit(request):
                   'account/edit.html',
                   {'user_form': user_form,
                    'profile_form': profile_form})
+
+
+@login_required
+def user_list(request):
+    users = User.objects.filter(is_active=True)
+    return render(request,
+                  'account/user/list.html',
+                  {'section': 'people',
+                   'users': users})
+
+
+@login_required
+def user_detail(request, username):
+    user = get_object_or_404(User,
+                             username=username,
+                             is_active=True)
+
+    return render(request,
+                  'account/user/detail.html',
+                  {'section': 'people',
+                   'user': user})
+
+
+
 
 # from django.http import HttpResponse
 # from django.shortcuts import render

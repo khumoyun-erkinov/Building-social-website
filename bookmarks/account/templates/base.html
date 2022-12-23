@@ -5,7 +5,6 @@
     <title>{% block title %}{% endblock %}</title>
     <link href="{% static "css/base.css" %}" rel="stylesheet">
 </head>
-
 <body>
 <div id="header">
     <span class="logo">Bookmarks</span>
@@ -15,10 +14,10 @@
                 <a href="{% url "dashboard" %}">My dashboard</a>
             </li>
             <li {% if section == "images" %}class="selected"{% endif %}>
-                <a href="#">Images</a>
+                <a href="{% url "images:list" %}">Images</a>
             </li>
             <li {% if section == "people" %}class="selected"{% endif %}>
-                <a href="#">People</a>
+                <a href="{% url "user_list" %}">People</a>
             </li>
         </ul>
     {% endif %}
@@ -45,20 +44,14 @@
     {% block content %}
     {% endblock %}
 </div>
-
-
 <script src="//cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
-
 <script>
-
     const csrftoken = Cookies.get('csrftoken');
     document.addEventListener('DOMContentLoaded', (event) => {
+        // DOM loaded
         {% block domready %}
         {% endblock %}
-
     })
 </script>
-
-
 </body>
 </html>
