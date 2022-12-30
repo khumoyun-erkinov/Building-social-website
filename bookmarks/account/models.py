@@ -3,6 +3,7 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 
 
+# Create your models here.
 
 class Profile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL,
@@ -16,7 +17,7 @@ class Profile(models.Model):
 
 
 class Contact(models.Model):
-    user_from = models.ForeignKey('auth.User',
+    user_form = models.ForeignKey('auth.User',
                                   related_name='rel_from_set',
                                   on_delete=models.CASCADE)
     user_to = models.ForeignKey('auth.User',
@@ -31,10 +32,9 @@ class Contact(models.Model):
         ordering = ['-created']
 
     def __str__(self):
-        return f'{self.user_from} follows {self.user_to}'
+        return f'{self.user_form} follow {self.user_to}'
 
 
-# Add following field to User dynamically
 user_model = get_user_model()
 user_model.add_to_class('following',
                         models.ManyToManyField('self',
